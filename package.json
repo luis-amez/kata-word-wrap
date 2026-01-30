@@ -1,7 +1,7 @@
 {
-  "name": "ts-eslint-prettier-jest-minimal",
+  "name": "kata-word-wrap",
   "version": "1.0.0",
-  "description": "TypeScript template with ESLint, Prettier and Jest",
+  "description": "Practice exercise of a function that calculates how to split a text line when it doesn't fit in the column, with test coverage",
   "main": "lib/index.js",
   "scripts": {
     "prepare": "husky install",
@@ -27,9 +27,10 @@
     "upgrade": "ncu -i",
     "upgrade:all": "ncu -u"
   },
-  "author": "Softwarecrafters.io",
+  "author": "Luis Amez",
   "license": "MIT",
   "devDependencies": {
+    "@jest/globals": "30.2.0",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.1",
     "@typescript-eslint/eslint-plugin": "8.48.1",
