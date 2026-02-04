@@ -5,6 +5,7 @@ export class ColumnWidth {
 
   static of(value: number) {
     if (value <= 0) throw new Error('columnWidth must be greater than 0');
+    if (!Number.isInteger(value)) throw new Error('columnWidth must be an integer');
     return new ColumnWidth(value);
   }
 

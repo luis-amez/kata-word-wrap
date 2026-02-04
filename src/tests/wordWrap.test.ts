@@ -50,4 +50,8 @@ describe('wordWrap', () => {
   it('fails if the column width is zero', () => {
     expect(() => WrappableText.of('hello').wrapText(ColumnWidth.of(0))).toThrow('columnWidth must be greater than 0');
   });
+
+  it('fails if the column width is a decimal number', () => {
+    expect(() => WrappableText.of('hello').wrapText(ColumnWidth.of(1.5))).toThrow('columnWidth must be an integer');
+  });
 });
