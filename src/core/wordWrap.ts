@@ -27,13 +27,13 @@ export class WrappableText {
   wrapText(columnWidth: ColumnWidth) {
     if (this.getText().length <= columnWidth.getValue()) return this.getText();
 
-    let wrappedText = this.getWrappedText(this.getText(), columnWidth);
-    let unwrappedText = this.getUnwrappedText(this.getText(), columnWidth);
-    while (unwrappedText.length > columnWidth.getValue()) {
-      wrappedText += '\n' + this.getWrappedText(unwrappedText, columnWidth);
-      unwrappedText = this.getUnwrappedText(unwrappedText, columnWidth);
+    let textBeforeLastLineBreak = this.getTextBeforeLineBreak(this.getText(), columnWidth);
+    let textAfterLastLineBreak = this.getTextAfterLineBreak(this.getText(), columnWidth);
+    while (textAfterLastLineBreak.length > columnWidth.getValue()) {
+      textBeforeLastLineBreak += '\n' + this.getTextBeforeLineBreak(textAfterLastLineBreak, columnWidth);
+      textAfterLastLineBreak = this.getTextAfterLineBreak(textAfterLastLineBreak, columnWidth);
     }
-    return wrappedText + '\n' + unwrappedText;
+    return textBeforeLastLineBreak + '\n' + textAfterLastLineBreak;
   }
 
   private getText() {
@@ -46,11 +46,11 @@ export class WrappableText {
     return textToWrap.includes(' ') ? whiteSpaceIndex + 1 : columnWidth.getValue();
   }
 
-  private getWrappedText(text: string, columnWidth: ColumnWidth) {
+  private getTextBeforeLineBreak(text: string, columnWidth: ColumnWidth) {
     return text.substring(0, this.getWrapIndex(text, columnWidth)).trim();
   }
 
-  private getUnwrappedText(text: string, columnWidth: ColumnWidth) {
+  private getTextAfterLineBreak(text: string, columnWidth: ColumnWidth) {
     return text.substring(this.getWrapIndex(text, columnWidth));
   }
 }
