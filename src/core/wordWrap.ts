@@ -25,33 +25,27 @@ export class WrappableText {
     return new WrappableText(text);
   }
 
-  wrapText(columnWidth: ColumnWidth) {
-    if (this.getText().length <= columnWidth.getValue()) return this.getText();
+  wrapText(columnWidth: ColumnWidth): string {
+    if (this.text.length <= columnWidth.getValue()) return this.text;
 
-    let textBeforeLastLineBreak = this.getTextBeforeLineBreak(this.getText(), columnWidth);
-    let textAfterLastLineBreak = this.getTextAfterLineBreak(this.getText(), columnWidth);
-    while (textAfterLastLineBreak.length > columnWidth.getValue()) {
-      textBeforeLastLineBreak += '\n' + this.getTextBeforeLineBreak(textAfterLastLineBreak, columnWidth);
-      textAfterLastLineBreak = this.getTextAfterLineBreak(textAfterLastLineBreak, columnWidth);
-    }
-    return textBeforeLastLineBreak + '\n' + textAfterLastLineBreak;
+    return (
+      this.getTextBeforeLineBreak(columnWidth) +
+      '\n' +
+      WrappableText.of(this.getTextAfterLineBreak(columnWidth)).wrapText(columnWidth)
+    );
   }
 
-  private getText() {
-    return this.text;
-  }
-
-  private getWrapIndex(text: string, columnWidth: ColumnWidth) {
-    const textToWrap = text.substring(0, columnWidth.getValue());
+  private getWrapIndex(columnWidth: ColumnWidth) {
+    const textToWrap = this.text.substring(0, columnWidth.getValue());
     const whiteSpaceIndex = textToWrap.indexOf(' ');
     return textToWrap.includes(' ') ? whiteSpaceIndex + 1 : columnWidth.getValue();
   }
 
-  private getTextBeforeLineBreak(text: string, columnWidth: ColumnWidth) {
-    return text.substring(0, this.getWrapIndex(text, columnWidth)).trim();
+  private getTextBeforeLineBreak(columnWidth: ColumnWidth) {
+    return this.text.substring(0, this.getWrapIndex(columnWidth)).trim();
   }
 
-  private getTextAfterLineBreak(text: string, columnWidth: ColumnWidth) {
-    return text.substring(this.getWrapIndex(text, columnWidth));
+  private getTextAfterLineBreak(columnWidth: ColumnWidth) {
+    return this.text.substring(this.getWrapIndex(columnWidth));
   }
 }
